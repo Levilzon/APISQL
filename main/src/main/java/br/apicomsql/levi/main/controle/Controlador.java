@@ -3,6 +3,7 @@ package br.apicomsql.levi.main.controle;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,18 @@ public class Controlador {
         return acao.save(obj);
     }
 
+    @DeleteMapping("/lista/delete/{id}")
+    public void remover(@PathVariable int id){
+        Perfil obj = selecionarId(id);
+        acao.delete(obj);
+
+    }
+
+    @GetMapping("/lista/contador")
+    public long contador(){
+        return acao.count();
+
+    }
     
     
 }
