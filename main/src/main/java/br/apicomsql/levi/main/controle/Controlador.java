@@ -75,5 +75,13 @@ public class Controlador {
     public List<Perfil> pesquisarComLetraFinalDoNome(@PathVariable String termo){
         return acao.findByNomeEndsWith(termo);
     }
-    
+    //vai ser usado para pesquisar e filtrar pessoas que estão no mesmo estado
+    @GetMapping("/lista/estado/{estado}")
+    public List<Perfil> selecionarPorEstado(@PathVariable String estado){
+        return acao.selecionarApenasPorEstado(estado);
+    }
+    @GetMapping("/status")
+    public String status(){
+        return "configurando status";
+    }
 }
