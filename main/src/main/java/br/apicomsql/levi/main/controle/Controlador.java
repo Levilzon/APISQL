@@ -3,6 +3,7 @@ package br.apicomsql.levi.main.controle;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.apicomsql.levi.main.perfil.Perfil;
 import br.apicomsql.levi.main.repositorio.Repositorio;
+import br.apicomsql.levi.main.servico.Servico;
+
 
 @RestController
 @RequestMapping(value = "/pcaminho")
@@ -21,6 +24,13 @@ public class Controlador {
     //conexão das ações do repositório com o controlador
     @Autowired
     private Repositorio acao;
+    
+    //A partir daqui as ações da api vão começar a mostrar o seus status de ação
+    //por meio dos serviços (CREATED, BAD_REQUEST,etc)
+    @Autowired
+    private Servico serv;
+    
+    
     //Função para saber se a API está funcionando
     @GetMapping("/teste")
     public String olaMundo(){
@@ -41,14 +51,16 @@ public class Controlador {
     public Perfil selecionarId(@PathVariable int id){
         return acao.findById(id);
     }
-    //vai editar a informação de alguma entidade
-    @PutMapping("/salvar")
-    public Perfil editar(@RequestBody Perfil obj){
-        return acao.save(obj);
-
-    }
     //vai salvar uma nova entidade
     @PostMapping("/salvar")
+    public ResponseEntity<?> editar(@RequestBody Perfil obj){
+        //implementação do serviço CREATED e
+        // caso não seja atendido algumas regras(BAD_REQUEST)
+        return serv.cadastrar(obj);
+
+    }
+    //vai editar as informações da entidade selecionada
+    @PutMapping("/salvar")
     public Perfil cadastrar(@RequestBody Perfil obj){
         return acao.save(obj);
     }
